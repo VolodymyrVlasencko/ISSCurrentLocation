@@ -10,6 +10,17 @@ const MapComponent = () => {
   const [latitude, setLatitude] = useState(0)
 
   useEffect(() => {
+    setTimeout(() =>
+    fetch('http://api.open-notify.org/iss-now.json')
+      .then(res => res.json())
+      .then(data => {
+        setLongitude(data.iss_position.longitude)
+        setLatitude(data.iss_position.latitude)
+      })
+      .catch(error => console.log(error)), 0)
+  }, [])
+
+  useEffect(() => {
     const intervalId = setInterval(() =>
     fetch('http://api.open-notify.org/iss-now.json')
       .then(res => res.json())
@@ -42,7 +53,7 @@ class Map extends Component {
     return (
       <div className = 'Map'>
         <WrapedMap
-          googleMapURL = { `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GOOGLE_MAPS_API_KEY}` }
+          googleMapURL = { `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.GOOGLE_MAPS_API_KEY}` }
           loadingElement = { <div style = { { height: `100%` } } /> }
           containerElement = { <div style={ { height: `100%` } } /> }
           mapElement = { <div style={ { height: `100%` } } /> }

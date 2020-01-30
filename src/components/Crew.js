@@ -3,6 +3,13 @@ import React, { Component } from 'react'
 class Crew extends Component {
 
   componentDidMount() {
+    setTimeout(() => fetch('http://api.open-notify.org/astros.json')
+      .then(res => res.json())
+      .then(data => {
+        this.props.changeCrew(data.people)
+      })
+      .catch(error => console.log(error)), 0)
+
     setInterval(() => fetch('http://api.open-notify.org/astros.json')
       .then(res => res.json())
       .then(data => {
