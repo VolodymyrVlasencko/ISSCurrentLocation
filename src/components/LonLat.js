@@ -3,21 +3,17 @@ import React, { Component } from 'react'
 class LonLat extends Component {
 
   componentDidMount() {
-    setTimeout(() => fetch('http://api.open-notify.org/iss-now.json')
+    const fetch_API = () => fetch('http://api.open-notify.org/iss-now.json')
       .then(res => res.json())
       .then(data => {
         this.props.changeLongitude(data.iss_position.longitude)
         this.props.changeLatitude(data.iss_position.latitude)
       })
-      .catch(error => console.log(error)), 0)
+      .catch(error => console.log(error))
       
-    setInterval(() => fetch('http://api.open-notify.org/iss-now.json')
-      .then(res => res.json())
-      .then(data => {
-        this.props.changeLongitude(data.iss_position.longitude)
-        this.props.changeLatitude(data.iss_position.latitude)
-      })
-      .catch(error => console.log(error)), 5000)
+    setTimeout(() => fetch_API(), 0)
+
+    setInterval(() => fetch_API(), 5000)
   }
 
   render() {

@@ -9,26 +9,20 @@ const MapComponent = () => {
   const [longitude, setLongitude] = useState(0)
   const [latitude, setLatitude] = useState(0)
 
+  const fetch_API = () => fetch('http://api.open-notify.org/iss-now.json')
+    .then(res => res.json())
+    .then(data => {
+      setLongitude(data.iss_position.longitude)
+      setLatitude(data.iss_position.latitude)
+    })
+    .catch(error => console.log(error))
+
   useEffect(() => {
-    setTimeout(() =>
-    fetch('http://api.open-notify.org/iss-now.json')
-      .then(res => res.json())
-      .then(data => {
-        setLongitude(data.iss_position.longitude)
-        setLatitude(data.iss_position.latitude)
-      })
-      .catch(error => console.log(error)), 0)
+    setTimeout(() => fetch_API(), 0)
   }, [])
 
   useEffect(() => {
-    const intervalId = setInterval(() =>
-    fetch('http://api.open-notify.org/iss-now.json')
-      .then(res => res.json())
-      .then(data => {
-        setLongitude(data.iss_position.longitude)
-        setLatitude(data.iss_position.latitude)
-      })
-      .catch(error => console.log(error)), 5000)
+    const intervalId = setInterval(() => fetch_API(), 5000)
       return () => clearInterval(intervalId)
   }, [])
 
